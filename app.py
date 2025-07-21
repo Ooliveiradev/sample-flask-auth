@@ -12,8 +12,14 @@ db.init_app(app)
 login_manager.init_app(app)
 # view login
 
+login_manager.login_view = 'login'
+
 # Session <- conexao ativa(sempre que abro uma sessao de banco de dados)
 
+@login_manager.user_loader
+def load_user(user_id):
+  return User.query.get(user_id)
+  
 @app.route('/login', methods=["POST"])
 def login():
   data = request.json
@@ -40,4 +46,3 @@ def hello_world():
 
 if __name__ == '__main__':
   app.run(debug=True)
-  
